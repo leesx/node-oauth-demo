@@ -46,3 +46,13 @@ $ node index.js
 
 Visit http://localhost:8080 in your browser, and click the link to login GitHub.
 
+## 注意
+
+```
+  // 必须对重定向的URI通过encodeURI编码 ,否则会报下面的错误
+  // TypeError: The header content contains invalid characters
+  const redirectURI = encodeURI(`/welcome.html?name=${name}`);
+  console.log('redirectURI', redirectURI)
+  ctx.response.redirect(redirectURI);
+```
+
