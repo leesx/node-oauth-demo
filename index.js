@@ -1,7 +1,7 @@
 // Fill in your client ID and client secret that you obtained
 // while registering the application
-const clientID = '7e015d8ce32370079895'
-const clientSecret = '2b976af0e6b6ceea2b1554aa31d1fe94ea692cd9'
+const clientID = 'e8b1021c61df155f94d2'
+const clientSecret = '621428c29450b1f7ee61b7251d45968412f79990'
 
 const Koa = require('koa');
 const path = require('path');
@@ -35,14 +35,19 @@ const oauth = async ctx => {
     method: 'get',
     url: `https://api.github.com/user`,
     headers: {
-      accept: 'application/json',
+      // accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `token ${accessToken}`
     }
   });
   console.log(result.data);
   const name = result.data.name;
 
-  ctx.response.redirect(`/welcome.html?name=${name}`);
+  // 必须对重定向的URI通过encodeURI编码 ,否则会报下面的错误
+  // TypeError: The header content contains invalid characters
+  const redirectURI = encodeURI(`/welcome.html?name=${name}`);
+  console.log('redirectURI', redirectURI)
+  ctx.response.redirect(redirectURI);
 };
 
 app.use(main);
